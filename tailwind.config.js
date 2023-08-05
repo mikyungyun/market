@@ -13,5 +13,7 @@ module.exports = {
   // class="dark"를 추가해주어야 다크모드를 따라가게 됨
   // 그래서 보통은 html의 body태그(가장 상위 요소)에 dark 클래스네임을 추가한다
   // darkMode: "class",
-  plugins: [],
+  plugins: [
+    require("@tailwindcss/forms")
+  ], plugins: [],
 }
