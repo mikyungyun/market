@@ -39,13 +39,14 @@ const Enter = () => {
           </div>
         </div>
         <form className="flex flex-col mt-8">
-          <label className="text-sm font-medium text-gray-700">
+          <label className="text-sm font-medium text-gray-700" htmlFor="input">
             {method === 'email' ? 'Email address' : null}
             {method === 'phone' ? 'Phone number' : null}
           </label>
           <div className="mt-1">
             {method === 'email' ? (
               <input
+                id="input"
                 type="email"
                 className={cls(
                   'appearance-none w-full py-2 px-3 border border-gray-300',
@@ -60,6 +61,7 @@ const Enter = () => {
                   +82
                 </span>
                 <input
+                  id="input"
                   type="number"
                   className={cls(
                     'appearance-none w-full py-2 px-3 border border-gray-300',
