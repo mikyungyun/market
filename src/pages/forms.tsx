@@ -6,7 +6,11 @@ interface ILoginForms {
   password: string;
 }
 function Forms() {
-  const { register, watch, handleSubmit } = useForm<ILoginForms>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ILoginForms>();
   const onValid = (data: ILoginForms) => {};
   const onInvalid = (errors: FieldErrors) => {
     console.log(errors);
@@ -15,19 +19,27 @@ function Forms() {
   return (
     <form onSubmit={handleSubmit(onValid, onInvalid)}>
       <input
-        {...(register('name'), { required: true })}
+        {...register('name', { required: 'Name is required' })}
         type="text"
-        placeholder="name"
+        placeholder="Name"
       />
       <input
-        {...(register('email'), { required: true })}
+        {...register('email', {
+          required: 'Email is required',
+          validate: {
+            notNaver: (value) => {
+              return value.includes('@naver.com') ? 'Naver is not allowed' : '';
+            },
+          },
+        })}
         type="email"
-        placeholder="email"
+        placeholder="Email"
       />
+      {errors.email?.message}
       <input
-        {...(register('password'), { required: true })}
+        {...register('password', { required: 'Password is required' })}
         type="password"
-        placeholder="password"
+        placeholder="Password"
       />
       <input type="submit" value="Create Account" />
     </form>
