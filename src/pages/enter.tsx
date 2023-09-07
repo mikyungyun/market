@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import cls from '@/libs/utils';
+import cls from '@/libs/server/utils';
 import { useForm } from 'react-hook-form';
 import Input from '@/components/input';
 
