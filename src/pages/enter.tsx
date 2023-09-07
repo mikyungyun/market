@@ -2,17 +2,19 @@ import { useState } from 'react';
 import cls from '@/libs/server/utils';
 import { useForm } from 'react-hook-form';
 import Input from '@/components/input';
+import useMutation from '@/libs/client/useMutation';
 
 // Input component 생성
 // useForm을 사용하여
 
-interface IEnter {
+interface IEnterForm {
   email: string;
   phone: string;
 }
 
 const Enter = () => {
-  const { register, reset } = useForm<IEnter>();
+  const [enter, { loading, data, error }] = useMutation('api/users/enter');
+  const { register, reset } = useForm<IEnterForm>();
   const [method, setMethod] = useState<'email' | 'phone'>('email');
   const onEmailClick = () => {
     reset();
@@ -22,15 +24,10 @@ const Enter = () => {
     reset();
     setMethod('phone');
   };
-  const onVaild = (data: IEnter) => {
-    fetch('api/users/enter', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+  const onVaild = (validForm: IEnterForm) => {
+    enter(validForm);
   };
+  console.log(loading, data, error);
 
   return (
     <div className="mt-16 px-5">
