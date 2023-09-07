@@ -1,10 +1,37 @@
 import { useState } from 'react';
 import cls from '@/libs/utils';
+import { useForm } from 'react-hook-form';
+import Input from '@/components/input';
+
+// Input component 생성
+// useForm을 사용하여
+
+interface IEnter {
+  email: string;
+  phone: string;
+}
 
 const Enter = () => {
+  const { register, reset } = useForm<IEnter>();
   const [method, setMethod] = useState<'email' | 'phone'>('email');
-  const onEmailClick = () => setMethod('email');
-  const onPhoneClick = () => setMethod('phone');
+  const onEmailClick = () => {
+    reset();
+    setMethod('email');
+  };
+  const onPhoneClick = () => {
+    reset();
+    setMethod('phone');
+  };
+  const onVaild = (data: IEnter) => {
+    fetch('api/users/enter', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  };
+
   return (
     <div className="mt-16 px-5">
       <h3 className="text-3xl font-bold text-center">Enter to Carrot</h3>
@@ -37,37 +64,25 @@ const Enter = () => {
           </div>
         </div>
         <form className="flex flex-col mt-8">
-          <label className="text-sm font-medium text-gray-700" htmlFor="input">
-            {method === 'email' ? 'Email address' : null}
-            {method === 'phone' ? 'Phone number' : null}
-          </label>
           <div className="mt-1">
             {method === 'email' ? (
-              <input
-                id="input"
+              <Input
+                label="email"
+                name="input"
+                register={register('email')}
+                kind="text"
                 type="email"
-                className={cls(
-                  'appearance-none w-full py-2 px-3 border border-gray-300',
-                  'rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500'
-                )}
                 required
               />
             ) : null}
             {method === 'phone' ? (
-              <div className="flex rounded-md shadow-sm">
-                <span className="flex items-center justify-center py-2 px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-sm text-gray-500 select-none">
-                  +82
-                </span>
-                <input
-                  id="input"
-                  type="number"
-                  className={cls(
-                    'appearance-none w-full py-2 px-3 border border-gray-300',
-                    'rounded-r-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500'
-                  )}
-                  required
-                />
-              </div>
+              <Input
+                label="phone"
+                name="phone"
+                register={register('phone')}
+                kind="phone"
+                type="number"
+              />
             ) : null}
           </div>
           <button className="bg-orange-500 hover:bg-orange-600 text-white py-2 px-3 mt-8 border-transparent rounded-md focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none">
